@@ -1,0 +1,53 @@
+﻿@model AddFormModel
+
+@{
+    var zones = ViewData["Zones"] as IEnumerable<ZoneModel> ?? throw new ArgumentNullException("Zones");
+}
+
+<script>
+    const zones = [];
+    @foreach(var zone in zones)
+    {
+        <text>
+        zones.push(
+            {
+                'number' : '@zone.Number',
+                'label': '@zone.Label'
+            }
+        );
+        </text>
+    }
+</script>
+
+<form method="post" asp-action="PostAdd" asp-controller="Main">
+    <div class="row">
+        <div class="col-12 mt-3">
+            <h2 class="h6">Nagłówek wycieczki</h2>
+        </div>
+        <div class="col-12">
+            <label class="form-label">Ilość osób:</label>
+            <input class="form-control" type="number" name="NumberOfPeople" />
+        </div>
+        <div class="col-12">
+            <label class="form-label">Data wycieczki:</label>
+            <input class="form-control" type="date" name="Date" />
+        </div>
+        <div class="col-12">
+            <label class="form-label">Komentarz:</label>
+            <textarea class="form-control" name="Comment"></textarea>
+        </div>
+
+        <div class="col-12 mt-3">
+            <h2 class="h6">Pozycje wycieczki</h2>
+            <button id="addPositionButton" type="button" class="btn btn-primary">Dodaj pozycje</button>
+            <div id="positionsContainer" class="col-12 mt-2">
+            </div>  
+        </div>
+
+        <div class="col-12 mt-3">
+            <button type="submit" class="btn btn-primary">Dodaj</button>
+        </div>
+    </div>
+</form>
+
+<script src="~/js/add.js"/>

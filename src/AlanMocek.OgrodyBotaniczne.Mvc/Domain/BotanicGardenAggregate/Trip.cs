@@ -1,0 +1,38 @@
+﻿namespace AlanMocek.OgrodyBotaniczne.Mvc.Domain.BotanicGardenAggregate
+{
+    public class Trip
+    {
+        public int Number { get; set; }
+
+        public int NumberOfPeople { get; set; }
+
+        public DateOnly Date { get; set; }
+
+        public string? Comment { get; set; }
+
+        public List<TripZone> Zones { get; set; }
+
+        private Trip()
+        {
+        }
+
+        internal Trip(int number, int numberOfPeople, DateOnly date, string? comment, IEnumerable<TripZone> zones)
+        {
+            if(numberOfPeople < 5) // change to constant
+            {
+                throw new Exception("Number of people must be at least 5.");
+            }
+
+            if(zones.DistinctBy(zone => zone.ZoneNumber).Count() != zones.Count())
+            {
+                throw new Exception("Zone can be assignes only one time.");
+            }
+
+            this.Number = number;
+            this.NumberOfPeople = numberOfPeople;
+            this.Date = date;
+            this.Comment = comment;
+            this.Zones = new List<TripZone>(zones);
+        }
+    }
+}

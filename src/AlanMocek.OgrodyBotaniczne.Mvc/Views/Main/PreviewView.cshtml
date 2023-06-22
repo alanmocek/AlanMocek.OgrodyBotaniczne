@@ -1,0 +1,12 @@
+﻿@model PreviewViewModel
+
+<p>Numer: @Model.TripModel.Number</p>
+<p>Liczba osób: @Model.TripModel.NumberOfPeople</p>
+<p>Komentarz: @Model.TripModel.Comment</p>
+
+<p>Strefy:</p>
+@foreach(var zone in Model.TripModel.Zones)
+{
+    <p>- Strefa @zone.Label</p>
+    <p>@zone.Comment</p>
+}

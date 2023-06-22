@@ -1,0 +1,40 @@
+﻿@model ListViewModel
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Numer</th>
+            <th scope="col">Data</th>
+            <th scope="col">Ilość osób</th>
+            <th scope="col">Komentarz</th>
+            <th scope="col">...</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach(var trip in Model.Trips)
+        {
+            <tr>
+                <th scope="row">@trip.Number</th>
+                <td>@trip.Date.ToString("dd/MM/yyyy")</td>
+                <td>@trip.NumberOfPeople</td>
+                <td>@trip.Comment</td>
+                <td>
+                    <div class="row">
+                        <div class="col">
+                            <form method="post" asp-action="PostDelete" asp-controller="main">
+                                <input hidden name="tripNumber" value="@trip.Number" />
+                                <button type="submit" class="btn btn-outline-danger">Usuń</button>
+                            </form>
+                        </div>
+                        <div class="col">
+                            <a asp-action="GetPreview" asp-controller="Main" asp-route-number="@trip.Number" class="btn btn-outline-primary">Przejdź</a>
+                        </div>
+                    </div>
+                    
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<a asp-action="GetAdd" class="btn btn-primary">Dodaj nową</a>
