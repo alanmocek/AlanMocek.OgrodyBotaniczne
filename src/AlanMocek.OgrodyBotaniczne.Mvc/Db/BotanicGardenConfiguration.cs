@@ -10,6 +10,9 @@ namespace AlanMocek.OgrodyBotaniczne.Mvc.Db
         {
             builder.Property(x => x.Id);
             builder.Property(x => x.AllowedTripsPerDay);
+            builder.Property(x => x.MinimumNumberOfPeople);
+            builder.Property(x => x.NextTripNumber);
+            builder.Property(x => x.NextZoneNumber);
 
             builder.OwnsMany(x => x.Trips, tripsBuilder =>
             {

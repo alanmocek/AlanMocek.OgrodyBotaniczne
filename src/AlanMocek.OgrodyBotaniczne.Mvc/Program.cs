@@ -1,4 +1,5 @@
 using AlanMocek.OgrodyBotaniczne.Mvc.Db;
+using AlanMocek.OgrodyBotaniczne.Mvc.Domain;
 using AlanMocek.OgrodyBotaniczne.Mvc.Domain.BotanicGardenAggregate;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,6 +17,8 @@ namespace AlanMocek.OgrodyBotaniczne.Mvc.Mvc
             builder.Services.AddMediatR(c => c.RegisterServicesFromAssemblyContaining<Program>());
             builder.Services.AddDbContext<OgrodyBotaniczneContext>(c => c.UseInMemoryDatabase("Db"));
 
+            builder.Services.AddSingleton<ITimeProvider, TimeProvider>();
+
             var app = builder.Build();
 
             using (var scope = app.Services.CreateScope())
@@ -25,10 +28,7 @@ namespace AlanMocek.OgrodyBotaniczne.Mvc.Mvc
 
                 if(!context.BotanicGardens.Any())
                 {
-                    var botanicGarden = new BotanicGarden(2)
-                    {
-                        AllowedTripsPerDay = 2
-                    };
+                    var botanicGarden = new BotanicGarden(2, 5);
 
                     botanicGarden.AddZone("A", 5, 5);
                     botanicGarden.AddZone("B", 15, 5);

@@ -18,9 +18,9 @@
 
         internal Trip(int number, int numberOfPeople, DateOnly date, string? comment, IEnumerable<TripZone> zones)
         {
-            if(numberOfPeople < 5) // change to constant
+            if(!zones.Any())
             {
-                throw new Exception("Number of people must be at least 5.");
+                throw new Exception("At least one zone must be added.");
             }
 
             if(zones.DistinctBy(zone => zone.ZoneNumber).Count() != zones.Count())

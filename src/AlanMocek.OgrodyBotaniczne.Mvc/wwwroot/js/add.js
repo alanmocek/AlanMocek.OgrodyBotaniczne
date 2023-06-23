@@ -5,8 +5,15 @@ addPositionButton.addEventListener('click', handleAddPosition)
 
 const positionsContainer = document.getElementById('positionsContainer');
 
+const createButton = document.getElementById('createButton');
+
 function handleAddPosition()
 {
+    if (addedPositions == 0)
+    {
+        createButton.disabled = false;
+    }
+
     const itemId = addedPositions;
 
     if (addedPositions >= zones.length)

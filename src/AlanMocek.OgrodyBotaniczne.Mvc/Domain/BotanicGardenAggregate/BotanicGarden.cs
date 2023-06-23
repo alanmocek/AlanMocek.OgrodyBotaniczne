@@ -16,20 +16,28 @@
 
         public int NextZoneNumber { get; private set; }
 
-        public int AllowedTripsPerDay { get; set; }
+        public int AllowedTripsPerDay { get; private set; }
 
-        public BotanicGarden(int allowedTripsPerDay)
+        public int MinimumNumberOfPeople { get; private set; }
+
+        public BotanicGarden(int allowedTripsPerDay, int minimumNumberOfPeople)
         {
             this.Id = Guid.NewGuid();
             this.zones = new List<Zone>();
             this.trips = new List<Trip>();
             this.AllowedTripsPerDay = allowedTripsPerDay;
+            this.MinimumNumberOfPeople = minimumNumberOfPeople;
             this.NextTripNumber = 1;
             this.NextZoneNumber = 1;
         }
 
         public void RegisterTrip(int numberOfPeople, DateOnly date, string? comment, IEnumerable<TripZone> tripZones)
         {
+            if(numberOfPeople < this.MinimumNumberOfPeople)
+            {
+                throw new Exception($"Number of people must be at least {MinimumNumberOfPeople}");
+            }
+
             if(Trips.Where(trip => trip.Date == date).Count() >= AllowedTripsPerDay + 1) 
             {
                 throw new Exception("Only 2 trips per day are allowed");
@@ -47,9 +55,13 @@
             this.zones.Add(zone);
         }
 
-        public void DeleteTrip(Trip trip)
+        public void DeleteTrip(Trip trip, ITimeProvider timeProvider)
         {
-            if(trip.Date <= new DateOnly(2023,06,23))
+            var nowDate = timeProvider.Now.Date;
+
+            var tripDate = trip.Date.ToDateTime(TimeOnly.MinValue).Date;
+
+            if(tripDate <= nowDate)
             {
                 throw new Exception("Cannot delete trip");
             }
